@@ -1,13 +1,32 @@
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from .models import Book, Ratings, User
-from .serializers import BookSerializer, UserSerializer, RatingSerializer
+from readio.models import Book, Ratings
+from readio.serializers import BookSerializer
+from rest_framework import generics
+from django.contrib.auth.models import User
+from readio.serializers import UserSerializer
+from rest_framework import permissions
 
 
-class BookApi(APIView):
+#Books
+class BookList(generics.ListCreateAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
-    def get(self, request, format=None):
-        books = Book.objects.get(id=0)
-        serializer = BookSerializer(books)
-        return Response(serializer.data)
 
+class BookDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+#User
+def perform_create(self, serializer):
+    serializer.save(owner=self.request.user)
+
+
+class UserList(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+class UserDetail(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
