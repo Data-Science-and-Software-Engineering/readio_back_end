@@ -3,6 +3,5 @@ env/
 readio_back_end/pgadmin4-2.1-py2.py3-none-any.whl
 readio_back_end/readio/__pycache__/
 readio_back_end/readio/migrations/__pycache__/
-readio_back_end/readio/urls.py
 readio_back_end/readio_back_end/__pycache__/
 
